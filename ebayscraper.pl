@@ -5,12 +5,12 @@
 # of new auction items.  
 # by Remy Baumgarten
 
-my $email_from = "xxxxx";		# Send From: example: bob\@gmail.com
-my $email_to = "xxxxxxx";	# Send To:
+my $email_from = "xxxxxxxxx";				# Send From: example: bob\@gmail.com
+my $email_to = "xxxxxxxxxx";				# Send To:
 my $email_title = "Ebay Alert!";			# Text Title
-my $smtp_user = "xxxxxx";     				# SMTP Username
-my $smtp_pass = "xxxxxx";  				# SMTP Password
-my $smtp_host = "xxxxxx";			# SMTP Host
+my $smtp_user = "xxxxxxxx";     			# SMTP Username
+my $smtp_pass = "xxxxxxxx";  				# SMTP Password
+my $smtp_host = "xxxxxxxx";					# SMTP Host
 my $sleep_time = 300;						# Sleep Time in Seconds
 my $max_time_left = 30;						# Default Auction Max
 
@@ -36,11 +36,12 @@ sub parser {
 		if ($line =~ m/rt\">(\d+[dhms])(&#160;)?(\d*[dhms]?)/ ) {$item{'time'} = "$1$3";}
 		if ($line =~ m/([\d])\sBids/){$item{'bids'} = $1;} 
 		if (keys %item ge 5 and $item{'price'} < $dollars and convert_time($item{'time'})) {
-			if (grep $_->{'url'} ne $item{'url'}, @items) { 
+			if (grep $_->{'url'} eq $item{'url'}, @items) { print "[*] Item exists" if $debug;}
+			else {
 				push(@items,\%item);
 				my $text = $item{'desc'}.", ".$item{'bids'}.", ".$item{'price'}.", ".$item{'time'}.", ".$item{'url'}."\n";
 				push(@text_message, $text)
-			}
+			} 
 		}
 	} return @text_message;
 }
